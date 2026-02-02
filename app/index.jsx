@@ -24,12 +24,12 @@ const Index = () => {
             <ThemedText> Educentral! </ThemedText>
             <Spacer />
 
-            <Link href="/home" style={styles.link}>
-                <ThemedText>Home Page</ThemedText>
+            <Link href="/register" style={styles.link}>
+                <ThemedText>Student Registration</ThemedText>
             </Link>
 
-            <Link href="/contact" style={styles.link}>
-            <ThemedText>Contact Page</ThemedText>
+            <Link href="/login" style={styles.link}>
+            <ThemedText>Student Login</ThemedText>
             </Link>
 
         </ThemedView>
