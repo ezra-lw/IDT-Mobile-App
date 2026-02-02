@@ -1,25 +1,39 @@
-import { StyleSheet, Text, View, Image} from 'react-native'
+import { StyleSheet, Text} from 'react-native'
 import { Link } from 'expo-router'
 
 import Logo from '../assets/img/logo_light.png'
 
+//themed components
+import ThemedView from '../components/ThemedView'
+import ThemedLogo from '../components/ThemedLogo'
+import Spacer from '../components/Spacer'
+import ThemedText from '../components/ThemedText'
+
 
 const Index = () => {
-  return (
-    <View style={styles.container}>
-        <Image source={Logo} style={styles.img}/>
+    return (
+        <ThemedView style={styles.container}>
+            <ThemedLogo />
+            <Spacer height={20} />
 
-      <Text style ={styles.title}>Welcome to Educentral</Text>
+            <ThemedText style={styles.title} title={true}>
+            Welcome to Educentral
+            </ThemedText>
 
-      <Text style={{ marginTop: 10, marginBottom: 30}}>
-        Educentral!
-    </Text>
+            <Spacer height={10} />
+            <ThemedText> Educentral! </ThemedText>
+            <Spacer />
 
-        <Link href="/home" style={styles.link}>Home Page</Link>
-        <Link href="/contact" style={styles.link}>Contact Page</Link>
-    
-    </View>
-  )
+            <Link href="/home" style={styles.link}>
+                <ThemedText>Home Page</ThemedText>
+            </Link>
+
+            <Link href="/contact" style={styles.link}>
+            <ThemedText>Contact Page</ThemedText>
+            </Link>
+
+        </ThemedView>
+    )
 }
 
 export default Index
@@ -29,18 +43,15 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: '#fff',
+        
     },
     title: {
         fontSize: 20,
         fontWeight: 'bold',
     },
-    img: {
-        marginVertical: 20,
-    },
-     link: {
+    link: {
         marginVertical: 10,
         borderBottomWidth: 1,
     },
-   
+
 })
