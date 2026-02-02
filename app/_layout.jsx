@@ -4,7 +4,11 @@ import React from 'react'
 
 const RootLayout = () => {
   return (
-     <Stack>
+     <Stack screenOptions={{
+        headerStyle : { backgroundColor: '#ddd' },
+        headerTintColor : '#333',
+
+     }}>
         <Stack.Screen name ="index" options={{ title: 'Login', headerShown : false }} />
         <Stack.Screen name ="home" options={{ title: 'Home' }} />
         <Stack.Screen name ="contact" options={{ title: 'Contact' }} />
