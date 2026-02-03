@@ -1,4 +1,4 @@
-import { StyleSheet, Text} from 'react-native'
+import { StyleSheet, Text } from 'react-native'
 import { Link } from 'expo-router'
 
 import Logo from '../assets/img/logo_light.png'
@@ -17,7 +17,7 @@ const Index = () => {
             <Spacer height={20} />
 
             <ThemedText style={styles.title} title={true}>
-            Welcome to Educentral
+                Welcome to Educentral
             </ThemedText>
 
             <Spacer height={10} />
@@ -29,7 +29,11 @@ const Index = () => {
             </Link>
 
             <Link href="/login" style={styles.link}>
-            <ThemedText>Student Login</ThemedText>
+                <ThemedText>Student Login</ThemedText>
+            </Link>
+
+            <Link href="/profile" style={styles.link}>
+                <ThemedText>Profile Page</ThemedText>
             </Link>
 
         </ThemedView>
@@ -43,7 +47,7 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        
+
     },
     title: {
         fontSize: 20,
