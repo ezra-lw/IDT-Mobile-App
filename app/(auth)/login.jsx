@@ -1,6 +1,7 @@
-import { StyleSheet, Pressable, Text } from 'react-native'
+import { Keyboard, StyleSheet, Text, TouchableWithoutFeedback } from 'react-native'
 import { Link } from 'expo-router'
 import { Colors } from '../../constants/Colors'
+import { useState } from 'react'
 
 // themed components
 
@@ -8,16 +9,20 @@ import ThemedView from '../../components/ThemedView'
 import ThemedText from '../../components/ThemedText'
 import ThemedButton from '../../components/ThemedButton'
 import Spacer from '../../components/Spacer'
-
+import ThemedTextInput from '../../components/ThemedTextInput'
 
 
 
 const Login = () => {
+    const [studentid, setStudentID] = useState('')
+    const [password, setPassword] = useState('')
+
 
     const handleSubmit = () => {
-        console.log('login form submitted')
+        console.log('login form submitted', studentid, password)
     }
     return (
+         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <ThemedView style={styles.container}>
 
             <Spacer />
@@ -25,11 +30,25 @@ const Login = () => {
                 Login to your account
             </ThemedText>
 
-          
+            <ThemedTextInput
+                style={{ width: '80%', marginBottom: 20 }}
+                placeholder="Student ID"
+                keyboardType="numeric"
+                onChangeText={setStudentID}
+                value={studentid}
+            />
+
+            <ThemedTextInput
+                style={{ width: '80%', marginBottom: 20 }}
+                placeholder="Password"
+                onChangeText={setPassword}
+                value={password}
+                secureTextEntry={true}
+            />
 
             <ThemedButton onPress={handleSubmit}>
-                <Text style = {{ color: '#f2f2f2'}}>Login</Text>
-            
+                <Text style={{ color: '#f2f2f2' }}>Login</Text>
+
             </ThemedButton>
 
 
@@ -41,6 +60,7 @@ const Login = () => {
             </Link>
 
         </ThemedView>
+        </TouchableWithoutFeedback>
     )
 }
 
