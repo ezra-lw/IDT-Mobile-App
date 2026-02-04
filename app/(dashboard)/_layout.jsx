@@ -1,6 +1,7 @@
 import { Tabs } from "expo-router"
 import { useColorScheme } from "react-native"
 import { Colors } from "../../constants/Colors";
+import { Ionicons } from '@expo/vector-icons';
 
 
 const DashboardLayout = () => {
@@ -23,21 +24,49 @@ const DashboardLayout = () => {
         >
             <Tabs.Screen
                 name="profile"
-                options={{ title: 'Profile' }}
+                options={{
+                    title: 'Profile',
+                    tabBarIcon: ({ focused }) => (
+                        <Ionicons
+                            name={focused ? 'person' : 'person-outline'}
+                            size={24}
+                            color={focused ? theme.iconColorFocused : theme.iconColor}
+                        />
+
+                    )
+                }}
 
             />
 
-             <Tabs.Screen
-                name="Updates"
-                options={{ title: 'Updates' }}
-
+            <Tabs.Screen
+                name="updates"
+                options={{
+                    title: 'Updates',
+                    tabBarIcon: ({ focused }) => (
+                        <Ionicons
+                            name={focused ? 'notifications' : 'notifications-outline'}
+                            size={24}
+                            color={focused ? theme.iconColorFocused : theme.iconColor}
+                        />
+                    )
+                }}
             />
 
-             <Tabs.Screen
-                name="Create"
-                options={{ title: 'Create' }}
 
+            <Tabs.Screen
+                name="create"
+                options={{
+                    title: 'Create', tabBarIcon: ({ focused }) => (
+                        <Ionicons
+                            name={focused ? 'create' : 'create-outline'}
+                            size={24}
+                            color={focused ? theme.iconColorFocused : theme.iconColor}
+                        />
+
+                    )
+                }}
             />
+
         </Tabs>
 
     )
