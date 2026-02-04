@@ -32,9 +32,15 @@ const Index = () => {
                 <ThemedText>Student Login</ThemedText>
             </Link>
 
+            <Link href="/stafflogin" style={styles.link}>
+                <ThemedText>Staff Login</ThemedText>
+            </Link>
+
             <Link href="/profile" style={styles.link}>
                 <ThemedText>Profile Page</ThemedText>
             </Link>
+
+
 
         </ThemedView>
     )
