@@ -11,6 +11,7 @@ import Spacer from '../../components/Spacer'
 
 
 
+
 const Login = () => {
 
     const handleSubmit = () => {
@@ -23,6 +24,8 @@ const Login = () => {
             <ThemedText title={true} style={styles.title}>
                 Login to your account
             </ThemedText>
+
+          
 
             <ThemedButton onPress={handleSubmit}>
                 <Text style = {{ color: '#f2f2f2'}}>Login</Text>

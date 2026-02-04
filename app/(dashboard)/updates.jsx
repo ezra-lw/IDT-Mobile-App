@@ -6,7 +6,7 @@ import ThemedView from '../../components/ThemedView'
 
 const Updates = () => {
   return (
-    <ThemedView style={styles.container}>
+    <ThemedView style={styles.container} safe={true}>
       <Spacer />
 
       <ThemedText title={true} style={styles.heading}>
@@ -21,12 +21,12 @@ export default Updates
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+    // justifyContent: 'center',
     alignItems: 'stretch',
   },
-    heading: {
-        fontWeight: 'bold',
-        fontSize: 25,
-        textAlign: 'center',
-    },
+  heading: {
+    fontWeight: 'bold',
+    fontSize: 25,
+    textAlign: 'center',
+  },
 })
