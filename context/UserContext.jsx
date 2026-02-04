@@ -1,10 +1,10 @@
-import { createContext } from "react";
+import { createContext, useState } from "react"
 
 
-export const UserContext = createContext();
+export const UserContext = createContext()
 
 export function UserProvider({ children }) {
-    const [user, setUser] = useState();
+    const [user, setUser] = useState(null)
 
     async function login(studentid, password) {
     }
@@ -12,8 +12,6 @@ export function UserProvider({ children }) {
     async function register(studentid, password) {
     }
 
-    async function login(staffid, staffpassword) {
-    }
 
     async function logout() {
     }

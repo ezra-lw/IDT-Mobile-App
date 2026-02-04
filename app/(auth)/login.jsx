@@ -2,6 +2,8 @@ import { Keyboard, StyleSheet, Text, TouchableWithoutFeedback } from 'react-nati
 import { Link } from 'expo-router'
 import { Colors } from '../../constants/Colors'
 import { useState } from 'react'
+import { useUser } from '../../hooks/useUser'
+
 
 // themed components
 
@@ -17,8 +19,10 @@ const Login = () => {
     const [studentid, setStudentID] = useState('')
     const [password, setPassword] = useState('')
 
+    const { user, login } = useUser()
 
     const handleSubmit = () => {
+        console.log('current user:', user)
         console.log('login form submitted', studentid, password)
     }
     return (
