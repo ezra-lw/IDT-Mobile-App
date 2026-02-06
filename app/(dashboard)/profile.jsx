@@ -1,10 +1,15 @@
 import { StyleSheet } from 'react-native'
+import { useUser } from '../../hooks/useUser'
 
 import Spacer from '../../components/Spacer'
 import ThemedText from '../../components/ThemedText'
 import ThemedView from '../../components/ThemedView'
+import ThemedButton from '../../components/ThemedButton'
+import Text from '../../components/ThemedText'
 
 const Profile = () => {
+    const { logout } = useUser
+
     return (
         <ThemedView style={styles.container}>
 
@@ -17,6 +22,10 @@ const Profile = () => {
             <ThemedText>
                 Thanks for joining EduCentral!
             </ThemedText>
+
+            <ThemedButton onPress={logout}>
+                <Text style={{ color: '#f2f2f2' }}>Logout</Text>
+            </ThemedButton>
 
             <Spacer />
         </ThemedView>

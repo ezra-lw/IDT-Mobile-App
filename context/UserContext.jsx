@@ -27,6 +27,8 @@ export function UserProvider({ children }) {
     }
 
     async function logout() {
+        await account.deleteSessions("current")
+        setUser(null)
     }
 
     return (
