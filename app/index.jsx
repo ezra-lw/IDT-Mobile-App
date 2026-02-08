@@ -25,11 +25,11 @@ const Index = () => {
             <Spacer />
 
             <Link href="/register" style={styles.link}>
-                <ThemedText>Student Registration</ThemedText>
+                <ThemedText>Registration</ThemedText>
             </Link>
 
             <Link href="/login" style={styles.link}>
-                <ThemedText>Student Login</ThemedText>
+                <ThemedText>Login</ThemedText>
             </Link>
 
             <Link href="/stafflogin" style={styles.link}>
