@@ -3,6 +3,8 @@ import { Link } from 'expo-router'
 import { Colors } from '../../constants/Colors'
 import { useState } from 'react'
 import { useUser } from '../../hooks/useUser'
+import ThemedTextInput from '../../components/ThemedTextInput'
+import ThemedLoader from '../../components/ThemedLoader'
 
 
 // themed components
@@ -11,7 +13,7 @@ import ThemedView from '../../components/ThemedView'
 import ThemedText from '../../components/ThemedText'
 import ThemedButton from '../../components/ThemedButton'
 import Spacer from '../../components/Spacer'
-import ThemedTextInput from '../../components/ThemedTextInput'
+
 
 
 
@@ -19,16 +21,20 @@ const Login = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [error, setError] = useState(null)
+    const [loading, setLoading] = useState(false)
 
     const { login } = useUser()
 
     const handleSubmit = async () => {
         setError(null)
+        setLoading(true)
 
         try {
             await login(email, password)
         } catch (error) {
             setError(error.message)
+        } finally {
+            setLoading(false)
         }
     }
 
@@ -70,6 +76,8 @@ const Login = () => {
                         Register instead
                     </ThemedText>
                 </Link>
+
+                {loading && <ThemedLoader />}
 
             </ThemedView>
         </TouchableWithoutFeedback>
