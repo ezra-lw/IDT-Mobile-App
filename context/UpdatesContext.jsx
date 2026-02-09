@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState } from "react";
-import { databases } from "../lib/appwrite";
+import { databases, client } from "../lib/appwrite";
 import { ID, Permission, Query, Role } from "react-native-appwrite";
 import { useUser } from "../hooks/useUser";
 
@@ -59,7 +59,7 @@ export function UpdatesProvider({ children }) {
                 ]
             );
 
-            setUpdates((prev) => [newUpdate, ...prev]);
+            await fetchUpdates();
             return newUpdate;
         } catch (error) {
             console.error(error.message);
@@ -79,11 +79,30 @@ export function UpdatesProvider({ children }) {
 
     useEffect(() => {
 
+        let unsubscribe;
+        const channel = `databases.${DATABASE_ID}.collections.${COLLECTION_ID}.documents`
+
+
         if (user) {
             fetchUpdates();
+            unsubscribe = client.subscribe(channel, (response) => {
+                const { payload, events } = response;
+
+                if (events[0].includes("create")) {
+                    setUpdates((prevUpdates) => [...prevUpdates, payload]);
+                }
+
+            })
         } else {
             setUpdates([]);
         }
+
+        return () => {
+            if (unsubscribe) unsubscribe()
+        }
+
+
+
     }, [user]);
 
     return (
