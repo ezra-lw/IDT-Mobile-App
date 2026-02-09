@@ -6,9 +6,10 @@ import Spacer from '../../components/Spacer'
 import ThemedText from '../../components/ThemedText'
 import ThemedView from '../../components/ThemedView'
 import ThemedCard from '../../components/ThemedCard'
+import { useRouter } from 'expo-router'
 
 const Updates = () => {
-
+  const router = useRouter()
   const { updates } = useUpdates()
 
   return (
@@ -27,18 +28,15 @@ const Updates = () => {
         keyExtractor={(item) => item.$id}
         contentContainerStyle={styles.list}
         renderItem={({ item }) => (
-          <Pressable>
+          <Pressable onPress={() => router.push(`/updates/${item.$id}`)}
+          >
             <ThemedCard style={styles.card}>
               <ThemedText style={styles.title}>{item.Title}</ThemedText>
               <ThemedText>Posted by {item.Author} on {item.Date}</ThemedText>
             </ThemedCard>
-
-
           </Pressable>
         )}
-
       />
-
     </ThemedView>
   )
 }
