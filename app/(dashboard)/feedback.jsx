@@ -1,7 +1,7 @@
-import { StyleSheet, Text, TouchableWithoutFeedback, Keyboard } from 'react-native'
-import { useMotivation } from '../../hooks/useMotivation'
-import { useRouter } from 'expo-router'
+import { StyleSheet, TouchableWithoutFeedback, Keyboard } from 'react-native'
+import { useFeedback } from '../../hooks/useFeedback'
 import { useState } from 'react'
+import { useRouter } from 'expo-router'
 
 // themed components
 
@@ -12,42 +12,44 @@ import ThemedButton from '../../components/ThemedButton'
 import Spacer from '../../components/Spacer'
 import ThemedCard from '../../components/ThemedCard'
 
-const Motivation = () => {
+const Feedback = () => {
 
     const [date, setDate] = useState('')
-    const [motivation, setMotivation] = useState('')
+    const [feedback, setFeedback] = useState('')
     const [loading, setLoading] = useState(false)
     const [success, setSuccess] = useState(false)
 
-    const { createMotivation } = useMotivation()
+    const { createFeedback } = useFeedback()
     const router = useRouter()
-
     const handleSubmit = async () => {
-        if (!date.trim() || !motivation.trim()) return
-
-        const motivationNum = parseInt(motivation)
-        if (isNaN(motivationNum) || motivationNum < 0 || motivationNum > 5) {
-            alert('Motivation must be a number between 0 and 5')
-            return
-        }
+        if (!date.trim() || !feedback.trim()) return
 
         setLoading(true)
         setSuccess(false)
 
-        await createMotivation({ Date: date, Motivation: motivationNum })
+        try {
+            console.log('Submitting feedback:', { Date: date, Feedback: feedback })
+            await createFeedback({ Date: date, Feedback: feedback })
+            console.log('Feedback submitted successfully')
 
-        // reset fields
-        setMotivation('')
-        setDate('')
+            // reset fields
+            setFeedback('')
+            setDate('')
 
-        //reset loading state
-        setLoading(false)
-        setSuccess(true)
+            //reset loading state
+            setLoading(false)
+            setSuccess(true)
 
-        // Hide success message after 3 seconds
-        setTimeout(() => {
-            setSuccess(false)
-        }, 5000)
+            // Hide success message after 3 seconds
+            setTimeout(() => {
+                setSuccess(false)
+            }, 5000)
+
+        } catch (error) {
+            console.error('Error submitting feedback:', error)
+            setLoading(false)
+            alert('Error submitting feedback: ' + error.message)
+        }
     }
 
 
@@ -56,7 +58,7 @@ const Motivation = () => {
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
             <ThemedView style={styles.container}>
                 <ThemedText title={true} style={styles.heading}>
-                    Log Your Daily Motivation
+                    Submit Your Feedback
                 </ThemedText>
 
                 <Spacer />
@@ -71,13 +73,12 @@ const Motivation = () => {
                 <Spacer />
 
                 <ThemedTextInput
-                    style={styles.input}
-                    placeholder="0-5 (5 being most motivated)"
-                    value={motivation}
-                    onChangeText={setMotivation}
-                    keyboardType="numeric"
+                    style={styles.multiline}
+                    placeholder="Suggestions, Comments, or Concerns"
+                    value={feedback}
+                    onChangeText={setFeedback}
+                    multiline={true}
                 />
-
                 <Spacer />
 
 
@@ -87,12 +88,13 @@ const Motivation = () => {
                     </ThemedText>
                 </ThemedButton>
 
+
                 {success && (
                     <>
                         <Spacer />
                         <ThemedCard style={styles.ThemedCard}>
                             <ThemedText style={styles.title}>
-                                Motivation logged successfully!
+                                Feedback logged successfully!
                             </ThemedText>
                         </ThemedCard>
                     </>
@@ -102,7 +104,7 @@ const Motivation = () => {
     );
 }
 
-export default Motivation
+export default Feedback
 
 const styles = StyleSheet.create({
     container: {
@@ -134,7 +136,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         textAlign: 'center',
     },
-     card: {
+    card: {
         width: '60%',
         padding: 20,
         minHeight: 100,

@@ -87,12 +87,12 @@ const DashboardLayout = () => {
                 />
 
                 <Tabs.Screen
-                    name="profile"
+                    name="settings"
                     options={{
-                        title: 'Profile',
+                        title: 'Settings',
                         tabBarIcon: ({ focused }) => (
                             <Ionicons
-                                name={focused ? 'person' : 'person-outline'}
+                                name={focused ? 'settings' : 'settings-outline'}
                                 size={24}
                                 color={focused ? theme.iconColorFocused : theme.iconColor}
                             />
@@ -104,6 +104,14 @@ const DashboardLayout = () => {
 
                 <Tabs.Screen
                     name="updates/[id]"
+                    options={{
+                        href: null,
+                    }}
+                />
+
+
+                 <Tabs.Screen
+                    name="feedback"
                     options={{
                         href: null,
                     }}

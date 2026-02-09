@@ -5,6 +5,7 @@ import { StatusBar } from 'expo-status-bar'
 import { UserProvider } from '../context/UserContext'
 import { UpdatesProvider } from '../context/UpdatesContext'
 import { MotivationProvider } from '../context/MotivationContext'
+import { FeedbackProvider } from '../context/FeedbackContext'
 
 const RootLayout = () => {
     const colorScheme = useColorScheme()
@@ -18,19 +19,21 @@ const RootLayout = () => {
         <UserProvider>
             <UpdatesProvider>
                 <MotivationProvider>
-                    <StatusBar value="auto" />
-                    <Stack screenOptions={{
-                        headerStyle: { backgroundColor: theme.navBackground },
-                        headerTintColor: theme.title,
+                    <FeedbackProvider>
+                        <StatusBar value="auto" />
+                        <Stack screenOptions={{
+                            headerStyle: { backgroundColor: theme.navBackground },
+                            headerTintColor: theme.title,
 
-                    }}>
-                        <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-                        <Stack.Screen name="index" options={{ title: 'Login', headerShown: false }} />
-                        <Stack.Screen name="home" options={{ title: 'Home' }} />
-                        <Stack.Screen name="contact" options={{ title: 'Contact' }} />
-                        <Stack.Screen name="(dashboard)" options={{ headerShown: false }} />
+                        }}>
+                            <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+                            <Stack.Screen name="index" options={{ title: 'Login', headerShown: false }} />
+                            <Stack.Screen name="home" options={{ title: 'Home' }} />
+                            <Stack.Screen name="contact" options={{ title: 'Contact' }} />
+                            <Stack.Screen name="(dashboard)" options={{ headerShown: false }} />
 
-                    </Stack>
+                        </Stack>
+                    </FeedbackProvider>
                 </MotivationProvider>
             </UpdatesProvider>
         </UserProvider>

@@ -8,7 +8,7 @@ import ThemedView from '../../components/ThemedView'
 import ThemedButton from '../../components/ThemedButton'
 import ThemedCard from '../../components/ThemedCard'
 
-const Profile = () => {
+const Home = () => {
     const { user } = useUser()
     const router = useRouter()
 
@@ -45,7 +45,7 @@ const Profile = () => {
     )
 }
 
-export default Profile
+export default Home
 
 const styles = StyleSheet.create({
     container: {
