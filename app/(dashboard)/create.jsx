@@ -1,107 +1,102 @@
-import { StyleSheet, Text, TouchableWithoutFeedback, Keyboard } from 'react-native'
-import { useUpdates } from '../../hooks/useUpdates'
-import { useRouter } from 'expo-router'
-import { useState } from 'react'
+import { StyleSheet, Text, TouchableWithoutFeedback, Keyboard } from "react-native";
+import { useState } from "react";
+import { useRouter } from "expo-router";
+import { useUpdates } from "../../hooks/useUpdates";
 
-// themed components
-
-import ThemedView from '../../components/ThemedView'
-import ThemedText from '../../components/ThemedText'
-import ThemedTextInput from '../../components/ThemedTextInput'
-import ThemedButton from '../../components/ThemedButton'
-import Spacer from '../../components/Spacer'
-
+import ThemedView from "../../components/ThemedView";
+import ThemedText from "../../components/ThemedText";
+import ThemedTextInput from "../../components/ThemedTextInput";
+import ThemedButton from "../../components/ThemedButton";
+import Spacer from "../../components/Spacer";
 
 const Create = () => {
-    const [title, setTitle] = useState('')
-    const [author, setAuthor] = useState('')
-    const [content, setContent] = useState('')
-    const [date, setDate] = useState('')
-    const [loading, setLoading] = useState(false)
+  const [title, setTitle] = useState("");
+  const [author, setAuthor] = useState("");
+  const [content, setContent] = useState("");
+  const [date, setDate] = useState("");
+  const [loading, setLoading] = useState(false);
 
-    const { createUpdate } = useUpdates()
-    const router = useRouter()
+  const { createUpdate } = useUpdates();
+  const router = useRouter();
 
-    const handleSubmit = async () => {
-        if (!title.trim() || !author.trim() || !content.trim()) return
+  const handleSubmit = async () => {
+    if (!title.trim() || !author.trim() || !content.trim()) return;
 
-        setLoading(true)
+    setLoading(true);
 
-        await createUpdate({ Title: title, Author: author, Content: content, Date: date })
+    await createUpdate({
+      Title: title,
+      Author: author,
+      Content: content,
+      Date: date,
+    });
 
-        // reset fields
-        setTitle('')
-        setAuthor('')
-        setContent('')
-        setDate('')
+    setTitle("");
+    setAuthor("");
+    setContent("");
+    setDate("");
 
-        // redirect
-        router.replace('/updates')
+    router.replace("/updates");
+    setLoading(false);
+  };
 
+  return (
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <ThemedView style={styles.container}>
+        <ThemedText title style={styles.heading}>
+          Create a New Update
+        </ThemedText>
 
-        //reset loading state
-        setLoading(false)
-    }
+        <Spacer />
 
+        <ThemedTextInput
+          style={styles.input}
+          placeholder="DD/MM/YYYY"
+          value={date}
+          onChangeText={setDate}
+        />
 
+        <Spacer />
 
-    return (
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-            <ThemedView style={styles.container}>
-                <ThemedText title={true} style={styles.heading}>
-                    Create a New Update
-                </ThemedText>
+        <ThemedTextInput
+          style={styles.input}
+          placeholder="Update Title"
+          value={title}
+          onChangeText={setTitle}
+        />
 
-                <Spacer />
+        <Spacer />
 
-                  <ThemedTextInput
-                    style={styles.input}
-                    placeholder="DD/MM/YYYY"
-                    value={date}
-                    onChangeText={setDate}
-                />
+        <ThemedTextInput
+          style={styles.input}
+          placeholder="Author"
+          value={author}
+          onChangeText={setAuthor}
+        />
 
-                <Spacer />
+        <Spacer />
 
-                <ThemedTextInput
-                    style={styles.input}
-                    placeholder="Update Title"
-                    value={title}
-                    onChangeText={setTitle}
-                />
+        <ThemedTextInput
+          style={styles.multiline}
+          placeholder="Update Content"
+          value={content}
+          onChangeText={setContent}
+          multiline
+        />
 
-                <Spacer />
+        <Spacer />
 
-                <ThemedTextInput
-                    style={styles.input}
-                    placeholder="Author"
-                    value={author}
-                    onChangeText={setAuthor}
-                />
+        <ThemedButton onPress={handleSubmit} disabled={loading}>
+          <Text style={{ color: "#fff" }}>
+            {loading ? "Saving..." : "Create Update"}
+          </Text>
+        </ThemedButton>
+      </ThemedView>
+    </TouchableWithoutFeedback>
+  );
+};
 
-                <Spacer />
-
-                <ThemedTextInput
-                    style={styles.multiline}
-                    placeholder="Update Content"
-                    value={content}
-                    onChangeText={setContent}
-                    multiline={true}
-                />
-
-                <Spacer />
-
-                <ThemedButton onPress={handleSubmit} disabled={loading}>
-                    <Text style={{ color: "#fff" }}>
-                        {loading ? "Saving..." : "Create Update"}
-                    </Text>
-                </ThemedButton>
-            </ThemedView>
-        </TouchableWithoutFeedback>
-    );
-}
-
-export default Create
+export default Create;
 
 const styles = StyleSheet.create({
   container: {

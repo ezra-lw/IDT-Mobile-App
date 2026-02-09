@@ -1,6 +1,6 @@
 import { createContext, useEffect, useState } from "react";
 import { databases, client } from "../lib/appwrite";
-import { ID, Permission, Query, Role } from "react-native-appwrite";
+import { ID, Query } from "react-native-appwrite";
 import { useUser } from "../hooks/useUser";
 
 const DATABASE_ID = "69809ca3000d5cd3cc78";
@@ -9,124 +9,105 @@ const COLLECTION_ID = "updates555";
 export const UpdatesContext = createContext();
 
 export function UpdatesProvider({ children }) {
-    const [updates, setUpdates] = useState([]);
-    const { user } = useUser();
+  const [updates, setUpdates] = useState([]);
+  const { user } = useUser();
 
-    async function fetchUpdates() {
-        try {
-            const response = await databases.listDocuments(
-                DATABASE_ID,
-                COLLECTION_ID,
-                [
-                    Query.equal("UserId", user.$id)
-                ]
-
-
-            )
-
-            setUpdates(response.documents);
-            console.log(response.documents)
-        } catch (error) {
-            console.error(error.message);
-
-        }
-    }
-
-    async function fetchUpdateById(id) {
-        try {
-            const response = await databases.getDocument(
-                DATABASE_ID, 
-                COLLECTION_ID, 
-                id
-            );
-
-            return response;
-
-        } catch (error) {
-            console.error(error.message);
-            return null;
-        }
-    }
-
-    async function createUpdate(data) {
-        try {
-            if (!user) {
-                throw new Error("User must be logged in to create updates.");
-            }
-
-            const newUpdate = await databases.createDocument(
-                DATABASE_ID,
-                COLLECTION_ID,
-                ID.unique(),
-                { ...data, UserId: user.$id },
-                [
-                    Permission.read(Role.any()),
-                    Permission.update(Role.user(user.$id)),
-                    Permission.delete(Role.user(user.$id)),
-                ]
-            );
-
-            await fetchUpdates();
-            return newUpdate;
-        } catch (error) {
-            console.error(error.message);
-            throw error;
-        }
-    }
-
-    async function deleteUpdate(id) {
-        try {
-            await databases.deleteDocument(
-                DATABASE_ID, 
-                COLLECTION_ID, 
-                id
-            );
-            setUpdates((prev) => prev.filter((item) => item.$id !== id));
-        } catch (error) {
-            console.error(error.message);
-            throw error;
-        }
-    }
-
-    useEffect(() => {
-
-        let unsubscribe;
-        const channel = `databases.${DATABASE_ID}.collections.${COLLECTION_ID}.documents`
-
-
-        if (user) {
-            fetchUpdates();
-            unsubscribe = client.subscribe(channel, (response) => {
-                const { payload, events } = response;
-
-                if (events[0].includes("create")) {
-                    setUpdates((prevUpdates) => [...prevUpdates, payload]);
-                }
-
-                if (events[0].includes("delete")) {
-                    setUpdates((prevUpdates) => prevUpdates.filter((update) => update.$id !== payload.$id));
-                }
-
-            })
-        } else {
-            setUpdates([]);
-        }
-
-        return () => {
-            if (unsubscribe) unsubscribe()
-        }
-
-
-
-    }, [user]);
-
-    return (
-        <UpdatesContext.Provider
-            value={{ updates, fetchUpdates, fetchUpdateById, createUpdate, deleteUpdate }}
-        >
-            {children}
-        </UpdatesContext.Provider>
+  async function fetchUpdates() {
+    const response = await databases.listDocuments(
+      DATABASE_ID,
+      COLLECTION_ID,
+      [Query.orderDesc("$createdAt")]
     );
+    setUpdates(response.documents);
+  }
+
+  async function fetchUpdateById(id) {
+    return await databases.getDocument(
+      DATABASE_ID,
+      COLLECTION_ID,
+      id
+    );
+  }
+
+  async function createUpdate(data) {
+    if (!user) throw new Error("Not authenticated");
+
+    const newUpdate = await databases.createDocument(
+      DATABASE_ID,
+      COLLECTION_ID,
+      ID.unique(),
+      {
+        Title: data.Title,
+        Author: data.Author,
+        Content: data.Content,
+        Date: data.Date,
+      }
+    );
+
+    setUpdates((prev) => [newUpdate, ...prev]);
+    return newUpdate;
+  }
+
+  async function deleteUpdate(id) {
+    await databases.deleteDocument(
+      DATABASE_ID,
+      COLLECTION_ID,
+      id
+    );
+
+    setUpdates((prev) =>
+      prev.filter((update) => update.$id !== id)
+    );
+  }
+
+  useEffect(() => {
+    if (!user) {
+      setUpdates([]);
+      return;
+    }
+
+    fetchUpdates();
+
+    const channel = `databases.${DATABASE_ID}.collections.${COLLECTION_ID}.documents`;
+
+    const unsubscribe = client.subscribe(channel, (response) => {
+      const { payload, events } = response;
+
+      if (events.some((e) => e.includes(".create"))) {
+        setUpdates((prev) =>
+          prev.some((u) => u.$id === payload.$id)
+            ? prev
+            : [payload, ...prev]
+        );
+      }
+
+      if (events.some((e) => e.includes(".delete"))) {
+        setUpdates((prev) =>
+          prev.filter((u) => u.$id !== payload.$id)
+        );
+      }
+
+      if (events.some((e) => e.includes(".update"))) {
+        setUpdates((prev) =>
+          prev.map((u) => (u.$id === payload.$id ? payload : u))
+        );
+      }
+    });
+
+    return () => unsubscribe();
+  }, [user]);
+
+  return (
+    <UpdatesContext.Provider
+      value={{
+        updates,
+        fetchUpdates,
+        fetchUpdateById,
+        createUpdate,
+        deleteUpdate,
+      }}
+    >
+      {children}
+    </UpdatesContext.Provider>
+  );
 }
-
-
