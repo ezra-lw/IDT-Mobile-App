@@ -59,7 +59,6 @@ const Create = () => {
                     placeholder="DD/MM/YYYY"
                     value={date}
                     onChangeText={setDate}
-                    keyboardType="date-pad"
                 />
 
                 <Spacer />
