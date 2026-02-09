@@ -10,13 +10,14 @@ import ThemedText from '../../components/ThemedText'
 import ThemedTextInput from '../../components/ThemedTextInput'
 import ThemedButton from '../../components/ThemedButton'
 import Spacer from '../../components/Spacer'
-
+import ThemedCard from '../../components/ThemedCard'
 
 const Create = () => {
 
     const [date, setDate] = useState('')
     const [motivation, setMotivation] = useState('')
     const [loading, setLoading] = useState(false)
+    const [success, setSuccess] = useState(false)
 
     const { createMotivation } = useMotivation()
     const router = useRouter()
@@ -31,6 +32,7 @@ const Create = () => {
         }
 
         setLoading(true)
+        setSuccess(false)
 
         await createMotivation({ Date: date, Motivation: motivationNum })
 
@@ -40,6 +42,12 @@ const Create = () => {
 
         //reset loading state
         setLoading(false)
+        setSuccess(true)
+
+        // Hide success message after 3 seconds
+        setTimeout(() => {
+            setSuccess(false)
+        }, 5000)
     }
 
 
@@ -53,7 +61,7 @@ const Create = () => {
 
                 <Spacer />
 
-                  <ThemedTextInput
+                <ThemedTextInput
                     style={styles.input}
                     placeholder="DD/MM/YYYY"
                     value={date}
@@ -78,6 +86,17 @@ const Create = () => {
                         {loading ? "Saving..." : "Submit"}
                     </ThemedText>
                 </ThemedButton>
+
+                {success && (
+                    <>
+                        <Spacer />
+                        <ThemedCard style={styles.ThemedCard}>
+                            <ThemedText style={styles.title}>
+                                Motivation logged successfully!
+                            </ThemedText>
+                        </ThemedCard>
+                    </>
+                )}
             </ThemedView>
         </TouchableWithoutFeedback>
     );
@@ -86,27 +105,38 @@ const Create = () => {
 export default Create
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  heading: {
-    fontWeight: "bold",
-    fontSize: 18,
-    textAlign: "center",
-  },
-  input: {
-    padding: 20,
-    borderRadius: 6,
-    alignSelf: "stretch",
-    marginHorizontal: 40,
-  },
-  multiline: {
-    padding: 20,
-    borderRadius: 6,
-    minHeight: 100,
-    alignSelf: "stretch",
-    marginHorizontal: 40,
-  },
+    container: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+    },
+    heading: {
+        fontWeight: "bold",
+        fontSize: 18,
+        textAlign: "center",
+    },
+    input: {
+        padding: 20,
+        borderRadius: 6,
+        alignSelf: "stretch",
+        marginHorizontal: 40,
+    },
+    multiline: {
+        padding: 20,
+        borderRadius: 6,
+        minHeight: 100,
+        alignSelf: "stretch",
+        marginHorizontal: 40,
+    },
+    title: {
+        color: 'white',
+        fontSize: 15,
+        fontWeight: 'bold',
+        textAlign: 'center',
+    },
+     card: {
+        width: '60%',
+        padding: 20,
+        minHeight: 100,
+    },
 });
