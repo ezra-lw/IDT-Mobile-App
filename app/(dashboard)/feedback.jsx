@@ -40,10 +40,16 @@ const Feedback = () => {
             setLoading(false)
             setSuccess(true)
 
-            // Hide success message after 3 seconds
+            // Hide success message after 3 seconds, reroute to home
             setTimeout(() => {
                 setSuccess(false)
-            }, 5000)
+                router.push('/home')
+            }, 3000)
+                
+
+            
+
+            
 
         } catch (error) {
             console.error('Error submitting feedback:', error)

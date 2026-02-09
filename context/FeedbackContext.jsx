@@ -57,7 +57,6 @@ export function FeedbackProvider({ children }) {
             );
             console.log('Feedback document created successfully:', newFeedback.$id)
 
-            await fetchFeedbacks();
             return newFeedback;
         } catch (error) {
             console.error('Error in createFeedback:', error);
