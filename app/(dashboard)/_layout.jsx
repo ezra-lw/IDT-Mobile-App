@@ -27,6 +27,20 @@ const DashboardLayout = () => {
 
             >
               
+                  <Tabs.Screen
+                    name="home"
+                    options={{
+                        title: 'Home',
+                        tabBarIcon: ({ focused }) => (
+                            <Ionicons
+                                name={focused ? 'home' : 'home-outline'}
+
+                                size={24}
+                                color={focused ? theme.iconColorFocused : theme.iconColor}
+                            />
+                        )
+                    }}
+                />
 
                 <Tabs.Screen
                     name="updates"
