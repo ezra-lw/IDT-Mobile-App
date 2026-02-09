@@ -80,25 +80,8 @@ export function FeedbackProvider({ children }) {
     }
 
     useEffect(() => {
-        let unsubscribe;
-        const channel = `databases.${DATABASE_ID}.collections.${COLLECTION_ID}.documents`
-
-        if (user) {
-            fetchFeedbacks();
-            unsubscribe = client.subscribe(channel, (response) => {
-                const { payload, events } = response;
-
-                if (events[0].includes("create")) {
-                    setFeedbacks((prevFeedbacks) => [...prevFeedbacks, payload]);
-                }
-            })
-        } else {
-            setFeedbacks([]);
-        }
-
-        return () => {
-            if (unsubscribe) unsubscribe()
-        }
+        // Feedback doesn't need to fetch on mount - only used for submission
+        // No automatic fetching to avoid authorization errors
     }, [user]);
 
     return (
