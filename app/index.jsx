@@ -36,9 +36,7 @@ const Index = () => {
                 <ThemedText>Staff Login</ThemedText>
             </Link>
 
-            <Link href="/profile" style={styles.link}>
-                <ThemedText>Profile Page</ThemedText>
-            </Link>
+            
 
 
 

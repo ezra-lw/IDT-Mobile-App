@@ -26,21 +26,7 @@ const DashboardLayout = () => {
                 }}
 
             >
-                <Tabs.Screen
-                    name="profile"
-                    options={{
-                        title: 'Profile',
-                        tabBarIcon: ({ focused }) => (
-                            <Ionicons
-                                name={focused ? 'person' : 'person-outline'}
-                                size={24}
-                                color={focused ? theme.iconColorFocused : theme.iconColor}
-                            />
-
-                        )
-                    }}
-
-                />
+              
 
                 <Tabs.Screen
                     name="updates"
@@ -71,6 +57,21 @@ const DashboardLayout = () => {
                     }}
                 />
 
+                <Tabs.Screen
+                    name="profile"
+                    options={{
+                        title: 'Profile',
+                        tabBarIcon: ({ focused }) => (
+                            <Ionicons
+                                name={focused ? 'person' : 'person-outline'}
+                                size={24}
+                                color={focused ? theme.iconColorFocused : theme.iconColor}
+                            />
+
+                        )
+                    }}
+
+                />
 
                 <Tabs.Screen
                     name="updates/[id]"
