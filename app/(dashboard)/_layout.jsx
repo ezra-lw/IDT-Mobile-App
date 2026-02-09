@@ -57,6 +57,21 @@ const DashboardLayout = () => {
                 />
 
 
+                   <Tabs.Screen
+                    name="motivation"
+                    options={{
+                        title: 'Motivation',
+                        tabBarIcon: ({ focused }) => (
+                            <Ionicons
+                                name={focused ? 'happy' : 'happy-outline'}
+
+                                size={24}
+                                color={focused ? theme.iconColorFocused : theme.iconColor}
+                            />
+                        )
+                    }}
+                />
+
                 <Tabs.Screen
                     name="create"
                     options={{

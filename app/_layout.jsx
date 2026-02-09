@@ -4,6 +4,7 @@ import { Colors } from '../constants/Colors'
 import { StatusBar } from 'expo-status-bar'
 import { UserProvider } from '../context/UserContext'
 import { UpdatesProvider } from '../context/UpdatesContext'
+import { MotivationProvider } from '../context/MotivationContext'
 
 const RootLayout = () => {
     const colorScheme = useColorScheme()
@@ -16,19 +17,21 @@ const RootLayout = () => {
     return (
         <UserProvider>
             <UpdatesProvider>
-                <StatusBar value="auto" />
-                <Stack screenOptions={{
-                    headerStyle: { backgroundColor: theme.navBackground },
-                    headerTintColor: theme.title,
+                <MotivationProvider>
+                    <StatusBar value="auto" />
+                    <Stack screenOptions={{
+                        headerStyle: { backgroundColor: theme.navBackground },
+                        headerTintColor: theme.title,
 
-                }}>
-                    <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-                    <Stack.Screen name="index" options={{ title: 'Login', headerShown: false }} />
-                    <Stack.Screen name="home" options={{ title: 'Home' }} />
-                    <Stack.Screen name="contact" options={{ title: 'Contact' }} />
-                    <Stack.Screen name="(dashboard)" options={{ headerShown: false }} />
+                    }}>
+                        <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+                        <Stack.Screen name="index" options={{ title: 'Login', headerShown: false }} />
+                        <Stack.Screen name="home" options={{ title: 'Home' }} />
+                        <Stack.Screen name="contact" options={{ title: 'Contact' }} />
+                        <Stack.Screen name="(dashboard)" options={{ headerShown: false }} />
 
-                </Stack>
+                    </Stack>
+                </MotivationProvider>
             </UpdatesProvider>
         </UserProvider>
     )
