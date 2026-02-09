@@ -1,6 +1,6 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import { databases } from "../lib/appwrite";
-import { ID, Permission, Role } from "react-native-appwrite";
+import { ID, Permission, Query, Role } from "react-native-appwrite";
 import { useUser } from "../hooks/useUser";
 
 const DATABASE_ID = "69809ca3000d5cd3cc78";
@@ -14,17 +14,26 @@ export function UpdatesProvider({ children }) {
 
     async function fetchUpdates() {
         try {
-            // TODO: implement listDocuments when ready
-            return [];
+            const response = await databases.listDocuments(
+                DATABASE_ID,
+                COLLECTION_ID,
+                [
+                    Query.equal("UserId", user.$id)
+                ]
+
+
+            )
+
+            setUpdates(response.documents);
+            console.log(response.documents)
         } catch (error) {
             console.error(error.message);
-            return [];
+
         }
     }
 
     async function fetchUpdateById(id) {
         try {
-            // TODO: implement getDocument when ready
             return null;
         } catch (error) {
             console.error(error.message);
@@ -42,9 +51,9 @@ export function UpdatesProvider({ children }) {
                 DATABASE_ID,
                 COLLECTION_ID,
                 ID.unique(),
-                data,
+                { ...data, UserId: user.$id },
                 [
-                    Permission.read(Role.user(user.$id)),
+                    Permission.read(Role.any()),
                     Permission.update(Role.user(user.$id)),
                     Permission.delete(Role.user(user.$id)),
                 ]
@@ -67,6 +76,15 @@ export function UpdatesProvider({ children }) {
             throw error;
         }
     }
+
+    useEffect(() => {
+
+        if (user) {
+            fetchUpdates();
+        } else {
+            setUpdates([]);
+        }
+    }, [user]);
 
     return (
         <UpdatesContext.Provider
