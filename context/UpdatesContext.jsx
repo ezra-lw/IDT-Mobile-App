@@ -34,7 +34,14 @@ export function UpdatesProvider({ children }) {
 
     async function fetchUpdateById(id) {
         try {
-            return null;
+            const response = await databases.getDocument(
+                DATABASE_ID, 
+                COLLECTION_ID, 
+                id
+            );
+
+            return response;
+
         } catch (error) {
             console.error(error.message);
             return null;
@@ -69,7 +76,11 @@ export function UpdatesProvider({ children }) {
 
     async function deleteUpdate(id) {
         try {
-            await databases.deleteDocument(DATABASE_ID, COLLECTION_ID, id);
+            await databases.deleteDocument(
+                DATABASE_ID, 
+                COLLECTION_ID, 
+                id
+            );
             setUpdates((prev) => prev.filter((item) => item.$id !== id));
         } catch (error) {
             console.error(error.message);
@@ -90,6 +101,10 @@ export function UpdatesProvider({ children }) {
 
                 if (events[0].includes("create")) {
                     setUpdates((prevUpdates) => [...prevUpdates, payload]);
+                }
+
+                if (events[0].includes("delete")) {
+                    setUpdates((prevUpdates) => prevUpdates.filter((update) => update.$id !== payload.$id));
                 }
 
             })
