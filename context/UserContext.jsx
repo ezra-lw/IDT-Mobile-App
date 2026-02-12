@@ -36,6 +36,13 @@ export function UserProvider({ children }) {
     async function getInitialUserValue() {
         try {
             const response = await account.get()
+            // Get user preferences to check team membership from backend
+            try {
+                const prefs = await account.getPrefs()
+                response.team = prefs.team || 'Student' // Default to Student if not set
+            } catch (prefError) {
+                response.team = 'Student'
+            }
             setUser(response)
         } catch (error) {
             setUser(null)
