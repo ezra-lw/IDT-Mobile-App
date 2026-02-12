@@ -1,5 +1,5 @@
 import { StyleSheet, Text } from 'react-native'
-import { Link } from 'expo-router'
+import { useRouter } from 'expo-router'
 
 import Logo from '../assets/img/logo_light.png'
 
@@ -8,9 +8,13 @@ import ThemedView from '../components/ThemedView'
 import ThemedLogo from '../components/ThemedLogo'
 import Spacer from '../components/Spacer'
 import ThemedText from '../components/ThemedText'
+import ThemedButton from '../components/ThemedButton'
+import ThemedCard from '../components/ThemedCard'
 
 
 const Index = () => {
+    const router = useRouter()
+
     return (
         <ThemedView style={styles.container}>
             <ThemedLogo />
@@ -20,17 +24,16 @@ const Index = () => {
                 Welcome to Educentral
             </ThemedText>
 
-            <Spacer height={10} />
-            <ThemedText> Educentral! </ThemedText>
             <Spacer />
 
-            <Link href="/register" style={styles.link}>
-                <ThemedText>Registration</ThemedText>
-            </Link>
+            <ThemedButton style={styles.button} onPress={() => router.push('/register')}>
+                <ThemedText style={{ color: '#f2f2f2', textAlign: 'center', fontSize: 20 }}>Registration</ThemedText>
+            </ThemedButton>
 
-            <Link href="/login" style={styles.link}>
-                <ThemedText>Login</ThemedText>
-            </Link>
+
+            <ThemedButton style={styles.button} onPress={() => router.push('/login')}>
+                <ThemedText style={{ color: '#f2f2f2', textAlign: 'center', fontSize: 20 }}>Login</ThemedText>
+            </ThemedButton>
 
         </ThemedView>
     )
@@ -46,12 +49,12 @@ const styles = StyleSheet.create({
 
     },
     title: {
-        fontSize: 20,
+        fontSize: 32,
         fontWeight: 'bold',
     },
-    link: {
-        marginVertical: 10,
-        borderBottomWidth: 1,
+    button: {
+        width: '80%',
+        fontSize: 30,
     },
 
 })

@@ -54,6 +54,9 @@ const Home = () => {
                     </>
                 )}
 
+
+                
+
                 <ThemedCard style={styles.card}>
                     <ThemedText style={styles.title}>School Updates</ThemedText>
                     <ThemedButton onPress={() => router.push('/updates')}>
