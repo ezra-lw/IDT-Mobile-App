@@ -1,7 +1,9 @@
-import { StyleSheet, ScrollView } from 'react-native'
+import { StyleSheet, ScrollView, Alert, Platform, Share } from 'react-native'
 import { useUser } from '../../hooks/useUser'
 import { useMotivation } from '../../hooks/useMotivation'
 import { useRouter } from 'expo-router'
+import * as FileSystem from 'expo-file-system'
+import * as Sharing from 'expo-sharing'
 
 import Spacer from '../../components/Spacer'
 import ThemedText from '../../components/ThemedText'
@@ -17,6 +19,66 @@ const Home = () => {
     // Get motivation summary if user is Staff
     const isStaff = user?.team === 'Staff'
     const summary = isStaff ? calculateDailySummary() : null
+
+    const downloadReport = async () => {
+        if (!summary) return
+
+        try {
+            const now = new Date()
+            // Create CSV content
+            let csvContent = 'Motivation Data Summary Report\n\n'
+            csvContent += `Generated: ${now.toLocaleDateString()} ${now.toLocaleTimeString()}\n\n`
+            csvContent += `Overall Average Score: ${summary.averageScore} / 5.00\n`
+            csvContent += `Total Entries: ${summary.totalEntries}\n\n`
+            csvContent += 'Daily Breakdown:\n'
+            csvContent += 'Date,Average Score,Entry Count\n'
+
+            summary.dailySummaries.forEach(day => {
+                csvContent += `${day.date},${day.averageScore},${day.count}\n`
+            })
+
+            const fileName = `motivation_report_${now.toISOString().split('T')[0]}.csv`
+
+            if (Platform.OS === 'web') {
+                const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' })
+                const url = URL.createObjectURL(blob)
+                const anchor = document.createElement('a')
+                anchor.href = url
+                anchor.download = fileName
+                document.body.appendChild(anchor)
+                anchor.click()
+                anchor.remove()
+                URL.revokeObjectURL(url)
+                return
+            }
+
+            const baseDir = FileSystem.documentDirectory ?? FileSystem.cacheDirectory
+            if (!baseDir) {
+                await Share.share({
+                    title: 'Motivation Report',
+                    message: csvContent,
+                })
+                return
+            }
+            const fileUri = baseDir + fileName
+
+            if (FileSystem.EncodingType?.UTF8) {
+                await FileSystem.writeAsStringAsync(fileUri, csvContent, {
+                    encoding: FileSystem.EncodingType.UTF8,
+                })
+            } else {
+                await FileSystem.writeAsStringAsync(fileUri, csvContent)
+            }
+
+            if (await Sharing.isAvailableAsync()) {
+                await Sharing.shareAsync(fileUri)
+            } else {
+                Alert.alert('Success', `Report saved to ${fileUri}`)
+            }
+        } catch (error) {
+            Alert.alert('Error', 'Failed to generate report: ' + error.message)
+        }
+    }
 
     return (
         <ThemedView safe={true} style={styles.container}>
@@ -49,6 +111,10 @@ const Home = () => {
                                     ))}
                                 </>
                             )}
+                            <Spacer />
+                            <ThemedButton onPress={downloadReport}>
+                                <ThemedText style={{ color: '#fff', textAlign: 'center' }}>Download Report</ThemedText>
+                            </ThemedButton>
                         </ThemedCard>
                         <Spacer />
                     </>
