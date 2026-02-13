@@ -33,3 +33,12 @@ export default function useNotifications() {
         setupNotifications();
     }, []);
 }
+
+
+// for testing use: 
+
+// trigger: {
+//  type: 'timeInterval',
+ // seconds: 10,
+  // repeats: false,
+// }
