@@ -31,6 +31,7 @@ export function UpdatesProvider({ children }) {
 
   async function createUpdate(data) {
     if (!user) throw new Error("Not authenticated");
+    if (user.team !== "Staff") throw new Error("Only staff members can create updates");
 
     const newUpdate = await databases.createDocument(
       DATABASE_ID,
@@ -41,23 +42,25 @@ export function UpdatesProvider({ children }) {
         Author: data.Author,
         Content: data.Content,
         Date: data.Date,
+        UserId: user.$id,
       }
     );
 
-    setUpdates((prev) => [newUpdate, ...prev]);
+    // Real-time subscription will handle adding to state
     return newUpdate;
   }
 
   async function deleteUpdate(id) {
+    if (!user) throw new Error("Not authenticated");
+    if (user.team !== "Staff") throw new Error("Only staff members can delete updates");
+
     await databases.deleteDocument(
       DATABASE_ID,
       COLLECTION_ID,
       id
     );
 
-    setUpdates((prev) =>
-      prev.filter((update) => update.$id !== id)
-    );
+    // Real-time subscription will handle removing from state
   }
 
   useEffect(() => {
@@ -105,6 +108,7 @@ export function UpdatesProvider({ children }) {
         fetchUpdateById,
         createUpdate,
         deleteUpdate,
+        isStaff: user?.team === "Staff",
       }}
     >
       {children}

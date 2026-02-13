@@ -16,7 +16,7 @@ const Create = () => {
   const [date, setDate] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const { createUpdate } = useUpdates();
+  const { createUpdate, isStaff } = useUpdates();
   const router = useRouter();
 
   const handleSubmit = async () => {
@@ -24,21 +24,40 @@ const Create = () => {
 
     setLoading(true);
 
-    await createUpdate({
-      Title: title,
-      Author: author,
-      Content: content,
-      Date: date,
-    });
+    try {
+      await createUpdate({
+        Title: title,
+        Author: author,
+        Content: content,
+        Date: date,
+      });
 
-    setTitle("");
-    setAuthor("");
-    setContent("");
-    setDate("");
+      setTitle("");
+      setAuthor("");
+      setContent("");
+      setDate("");
 
-    router.replace("/updates");
-    setLoading(false);
+      router.replace("/updates");
+    } catch (error) {
+      alert(error.message);
+    } finally {
+      setLoading(false);
+    }
   };
+
+  if (!isStaff) {
+    return (
+      <ThemedView style={styles.container}>
+        <ThemedText title style={styles.heading}>
+          Access Denied
+        </ThemedText>
+        <Spacer />
+        <ThemedText style={{ textAlign: 'center', padding: 20 }}>
+          Only staff members can create updates.
+        </ThemedText>
+      </ThemedView>
+    );
+  }
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>

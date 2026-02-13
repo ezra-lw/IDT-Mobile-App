@@ -18,7 +18,7 @@ const UpdateDetails = () => {
 
 
     const { id } = useLocalSearchParams()
-    const { fetchUpdateById, deleteUpdate } = useUpdates()
+    const { fetchUpdateById, deleteUpdate, isStaff } = useUpdates()
     const router = useRouter()
 
     const handleDelete = async () => {
@@ -57,12 +57,14 @@ const UpdateDetails = () => {
                 <ThemedText>{update.Content}</ThemedText>
             </ThemedCard>
 
-            <ThemedButton style={styles.delete} onPress={handleDelete}>
-                <ThemedText style={{ color: '#fff', textAlign: 'center' }}>
-                Delete Update
-                </ThemedText>
+            {isStaff && (
+                <ThemedButton style={styles.delete} onPress={handleDelete}>
+                    <ThemedText style={{ color: '#fff', textAlign: 'center' }}>
+                    Delete Update
+                    </ThemedText>
 
-            </ThemedButton>
+                </ThemedButton>
+            )}
         </ThemedView>
 
     )
