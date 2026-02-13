@@ -9,8 +9,11 @@ How to run the project:
 
 3. Open Terminal and Enter the Following commands:
 
- ```npm install``` This will install all the packages required to run this project, outlined in package.json.
- ```npx expo start``` This will start the local development server.
+ ```npm install``` 
+ This will install all the packages required to run this project, outlined in package.json.
+
+ ```npx expo start``` 
+ This will start the local development server.
 
 4. Download the Expo Go mobile application on an iOS device
 
