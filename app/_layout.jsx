@@ -6,12 +6,13 @@ import { UserProvider } from '../context/UserContext'
 import { UpdatesProvider } from '../context/UpdatesContext'
 import { MotivationProvider } from '../context/MotivationContext'
 import { FeedbackProvider } from '../context/FeedbackContext'
+import useNotifications from '../hooks/UseNotifications'
 
 const RootLayout = () => {
     const colorScheme = useColorScheme()
     const theme = Colors[colorScheme] ?? Colors.light
 
-
+    useNotifications();
 
 
 
