@@ -19,7 +19,7 @@ const Motivation = () => {
     const [loading, setLoading] = useState(false)
     const [success, setSuccess] = useState(false)
 
-    const { createMotivation } = useMotivation()
+    const { createMotivation, isStaff } = useMotivation()
     const router = useRouter()
 
     const handleSubmit = async () => {
@@ -55,46 +55,60 @@ const Motivation = () => {
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
             <ThemedView style={styles.container}>
-                <ThemedText title={true} style={styles.heading}>
-                    Log Your Daily Motivation
-                </ThemedText>
-
-                <Spacer />
-
-                <ThemedTextInput
-                    style={styles.input}
-                    placeholder="DD/MM/YYYY"
-                    value={date}
-                    onChangeText={setDate}
-                />
-
-                <Spacer />
-
-                <ThemedTextInput
-                    style={styles.input}
-                    placeholder="0-5 (5 being most motivated)"
-                    value={motivation}
-                    onChangeText={setMotivation}
-                    keyboardType="numeric"
-                />
-
-                <Spacer />
-
-
-                <ThemedButton onPress={handleSubmit} disabled={loading}>
-                    <ThemedText style={{ color: "#fff" }}>
-                        {loading ? "Saving..." : "Submit"}
-                    </ThemedText>
-                </ThemedButton>
-
-                {success && (
+                {isStaff ? (
                     <>
+                        <ThemedText title={true} style={styles.heading}>
+                            Access Denied
+                        </ThemedText>
                         <Spacer />
-                        <ThemedCard style={styles.ThemedCard}>
-                            <ThemedText style={styles.title}>
-                                Motivation logged successfully!
+                        <ThemedText style={{ textAlign: 'center', padding: 20 }}>
+                            Only students can log motivation. Staff members cannot access this feature.
+                        </ThemedText>
+                    </>
+                ) : (
+                    <>
+                        <ThemedText title={true} style={styles.heading}>
+                            Log Your Daily Motivation
+                        </ThemedText>
+
+                        <Spacer />
+
+                        <ThemedTextInput
+                            style={styles.input}
+                            placeholder="DD/MM/YYYY"
+                            value={date}
+                            onChangeText={setDate}
+                        />
+
+                        <Spacer />
+
+                        <ThemedTextInput
+                            style={styles.input}
+                            placeholder="0-5 (5 being most motivated)"
+                            value={motivation}
+                            onChangeText={setMotivation}
+                            keyboardType="numeric"
+                        />
+
+                        <Spacer />
+
+
+                        <ThemedButton onPress={handleSubmit} disabled={loading}>
+                            <ThemedText style={{ color: "#fff" }}>
+                                {loading ? "Saving..." : "Submit"}
                             </ThemedText>
-                        </ThemedCard>
+                        </ThemedButton>
+
+                        {success && (
+                            <>
+                                <Spacer />
+                                <ThemedCard style={styles.ThemedCard}>
+                                    <ThemedText style={styles.title}>
+                                        Motivation logged successfully!
+                                    </ThemedText>
+                                </ThemedCard>
+                            </>
+                        )}
                     </>
                 )}
             </ThemedView>

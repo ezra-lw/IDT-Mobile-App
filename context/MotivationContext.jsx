@@ -156,7 +156,7 @@ export function MotivationProvider({ children }) {
 
     return (
         <MotivationContext.Provider
-            value={{ motivations, fetchMotivations, fetchMotivationById, createMotivation, deleteMotivation, calculateDailySummary }}
+            value={{ motivations, fetchMotivations, fetchMotivationById, createMotivation, deleteMotivation, calculateDailySummary, isStaff: user?.team === "Staff" }}
         >
             {children}
         </MotivationContext.Provider>
